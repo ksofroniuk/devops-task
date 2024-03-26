@@ -1,5 +1,5 @@
 resource "aws_eip" "eip" {
-  domain   = "vpc"
+  domain = "vpc"
 }
 
 data "aws_ami" "ubuntu_20240229" {
@@ -14,11 +14,11 @@ data "aws_ami" "ubuntu_20240229" {
 }
 
 resource "aws_instance" "linux_server_2" {
-  ami                         = data.aws_ami.ubuntu_20240229.id
-  instance_type               = "t3.micro"
-  subnet_id                   = aws_subnet.subnet_2.id
-  vpc_security_group_ids      = [aws_security_group.security_group.id]
-  user_data                   = file("vm-init.sh")
+  ami                    = data.aws_ami.ubuntu_20240229.id
+  instance_type          = "t3.micro"
+  subnet_id              = aws_subnet.subnet_2.id
+  vpc_security_group_ids = [aws_security_group.security_group.id]
+  user_data              = file("vm-init.sh")
 
   tags = {
     Name = "recngx02"

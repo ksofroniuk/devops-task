@@ -3,6 +3,10 @@ name: Build & Push
 on:
   workflow_dispatch:
 
+env:
+  ECR_REPOSITORY: demo
+  AWS_REGION: eu-west-1
+
 jobs:
   build:   
     name: Build Image
@@ -15,17 +19,21 @@ jobs:
       with:
         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: eu-west-1
+        aws-region: ${{ env.AWS_REGION }}
     - name: Login to Amazon ECR
       id: login-ecr
       uses: aws-actions/amazon-ecr-login@v2
-      with:
-        mask-password: 'false'
     - name: Build, tag, and push image to Amazon ECR
+      id: build
       env:
         ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         ECR_REPOSITORY: demo
         IMAGE_TAG: ${{ github.sha }}
       run: |
-        docker build . -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG -f subfolder/Dockerfile
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG build/
         docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
+    - name: Setup kubeconfig
+      run: aws eks update-kubeconfig --name ${{ secrets.EKS_CLUSTER_NAME }} --region $AWS_REGION
+    - name: Update deployment
+      run: kubectl set image deployment/nginx nginx=${{ steps.build.outputs.image }}

@@ -21,8 +21,8 @@ resource "aws_lb" "lb" {
   name               = "lb-recngx"
   internal           = false
   load_balancer_type = "application"
-  security_groups = [aws_security_group.security_group.id]
-  subnets = [aws_subnet.subnet.id, aws_subnet.subnet_2.id]
+  security_groups    = [aws_security_group.security_group.id]
+  subnets            = [aws_subnet.subnet.id, aws_subnet.subnet_2.id]
 }
 
 

@@ -29,8 +29,8 @@ resource "aws_subnet" "subnet" {
 }
 
 resource "aws_subnet" "subnet_2" {
-  vpc_id     = aws_vpc.vpc.id
-  cidr_block = "172.16.1.0/24"
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = "172.16.1.0/24"
   availability_zone = "eu-west-1c"
 
   tags = local.tags
@@ -48,7 +48,7 @@ resource "aws_route_table_association" "route_table_association_2" {
 
 resource "aws_default_network_acl" "network_acl" {
   default_network_acl_id = aws_vpc.vpc.default_network_acl_id
-  subnet_ids = [aws_subnet.subnet.id,aws_subnet.subnet_2.id]
+  subnet_ids             = [aws_subnet.subnet.id, aws_subnet.subnet_2.id]
 
   egress {
     protocol   = -1
@@ -77,7 +77,7 @@ resource "aws_security_group" "security_group" {
     {
       cidr_blocks      = ["0.0.0.0/0"]
       description      = ""
-      from_port        = 22 
+      from_port        = 22
       ipv6_cidr_blocks = []
       prefix_list_ids  = []
       protocol         = "tcp"
