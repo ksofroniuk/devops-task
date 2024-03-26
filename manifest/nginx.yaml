@@ -19,6 +19,11 @@ spec:
       annotations:
         configmap-version: 1
   replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
   selector:
     matchLabels:
       app: nginx
