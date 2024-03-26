@@ -1,7 +1,7 @@
 resource "random_string" "suffix_ecr" {
   length  = 8
   special = false
-  upper = false
+  upper   = false
 }
 
 resource "aws_ecr_repository" "ecr" {
