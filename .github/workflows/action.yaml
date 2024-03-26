@@ -1,6 +1,9 @@
 name: Build & Push
 
-on: []
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:   
