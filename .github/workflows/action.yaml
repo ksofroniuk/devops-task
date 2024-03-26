@@ -1,5 +1,7 @@
 name: Build & Push
 
+on: []
+
 jobs:
   build:   
     name: Build Image
